@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+  <link type="text/css" rel="stylesheet" href="css/customColors.css"  media="screen,projection"/>
+  <link type="text/css" rel="stylesheet" href="css/ion.rangeSlider.css"  media="screen,projection"/>
+  <link type="text/css" rel="stylesheet" href="css/ion.rangeSlider.skinFlat.css"  media="screen,projection"/>
+  <link type="text/css" rel="stylesheet" href="css/index.css"  media="screen,projection"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Formulario</title>
+  <script type="text/javascript">
+  var resultado="";
+  var info='{"estudiantes":['+
+      '{"codigo":1,"nombre":"Carlos Lemus", "nota":10},'+
+      '{"codigo":2,"nombre":"Mario Ramirez", "nota":4.9},'+
+      '{"codigo":3,"nombre":"Julio Lopez", "nota":3.4},'+
+      '{"codigo":4,"nombre":"Danila Rosales", "nota":8.5},'+
+      '{"codigo":5,"nombre":"Salvador Peña", "nota":7.5},'+
+      '{"codigo":6,"nombre":"Ulises Magaña", "nota":8.0},'+
+      '{"codigo":7,"nombre":"Jose Guzman", "nota":5.9},'+
+      '{"codigo":8,"nombre":"Maria Aguilar", "nota":6.4},'+
+      '{"codigo":9,"nombre":"Danilo Zazu", "nota":7.5},'+
+      '{"codigo":10,"nombre":"Marlo Perez", "nota":7.5}]}';
+  var notas=[];
+  var obj=JSON.parse(info);
+  var acumulado=0.0;
+  for(i=0; i<obj.estudiantes.length; i++){
+     nota=obj.estudiantes[i].nota;
+     notas.push(nota);
+     acumulado+=nota;
+     //alert(resultado);
+  }
+  var promedio=acumulado/notas.length;
+  console.log(acumulado);
+  console.log(notas.length);
+  var notaMayor=Math.max.apply(null, notas);
+  var notaMenor=Math.min.apply(null, notas);
+
+  function mostrarPromedio(){
+    document.getElementById('notaPromedio').innerHTML="Nota promedio es: "+promedio.toFixed(2);
+  }
+
+  function mostrarPorNota(tipoNota){
+    resultado="";
+    for(i=0; i<obj.estudiantes.length; i++){
+      codigo=obj.estudiantes[i].codigo;
+      nombre=obj.estudiantes[i].nombre;
+      nota=obj.estudiantes[i].nota;
+
+      if(notaMayor==nota && tipoNota=='max')
+      {
+        resultado+=dibujarHtml(codigo,nombre,nota);
+      }
+
+      if(notaMenor==nota && tipoNota=='min')
+      {
+        resultado+=dibujarHtml(codigo,nombre,nota);
+      }
+
+    }
+    document.getElementById('contenido').innerHTML=resultado;
+  }
+  function mostrarTodo(){
+    resultado="";
+     for(i=0; i<obj.estudiantes.length; i++){
+        codigo=obj.estudiantes[i].codigo;
+        nombre=obj.estudiantes[i].nombre;
+        nota=obj.estudiantes[i].nota;
+        resultado+=dibujarHtml(codigo,nombre,nota);
+        //alert(resultado);
+     }
+     //alert(resultado);
+     document.getElementById('contenido').innerHTML=resultado;
+   }
+
+   function dibujarHtml(codigo,nombre,nota){
+      var retorno= '<div class="resultado row">'+
+      '<div class="colImagen col s12 m6 l6">'+
+        '<img src="img/estudiante.png" id="imgHome" alt="estudiante">'+
+      '</div><div class="col-data col s12 m6 l6">'+
+      '<table class="tabla_sin">'+
+        '<tr>'+
+          '<td class="celda_sin1"><strong>Id</strong></td>'+
+          '<td class="celda_sin2">'+codigo+'</td>'+
+        '</tr>'+
+        '<tr>'+
+          '<td class="celda_sin1"><strong>Direccion</strong></td>'+
+          '<td class="celda_sin2">'+nombre+'</td>'+
+        '</tr>'+
+        '<tr>'+
+          '<td class="celda_sin1"><strong>Ciudad</strong></td>'+
+          '<td class="celda_sin2">'+nota+'</td>'+
+        '</tr>'+
+      '</table>'+
+      '</div></div>';
+           return retorno;
+   }
+
+  </script>
+</head>
+
+<body>
+  <div class="contenedor">
+    <div class="colContenido">
+      <div class="tituloContenido card">
+        <h5>Control de notas</h5>
+        <h5 id="notaPromedio" style="float:right;"></h5>
+        <div class="divider"></div>
+        <button type="button" name="todos" class="btn-flat waves-effect" id="mostrarTodos" onclick="mostrarTodo();">Mostrar Todos</button>
+        <button type="button" name="estMayor" class="btn-flat waves-effect" id="estMayor" onclick="mostrarPorNota('max')">Nota Mayor</button>
+        <button type="button" name="estMenor" class="btn-flat waves-effect" id="estMayor" onclick="mostrarPorNota('min')">Nota Menor</button>
+        <button type="button" name="promedio" class="btn-flat waves-effect" id="promedio" onclick="mostrarPromedio();">Nota Promedio</button>
+      </div>
+    </div>
+    <div id="contenido" class="contenido">
+    </div>
+  </div>
+
+  <script type="text/javascript" src="js/jquery-3.0.0.js"></script>
+  <script type="text/javascript" src="js/ion.rangeSlider.min.js"></script>
+  <script type="text/javascript" src="js/materialize.min.js"></script>
+</body>
+</html>
